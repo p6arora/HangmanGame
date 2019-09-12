@@ -27,6 +27,7 @@ def get_word():
 
 
 
+# TODO: need to break start_game into smaller functions
 def start_game(word):
     parts_drawn = 0
     letters_remaining = len(word)
