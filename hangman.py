@@ -9,9 +9,8 @@ Text File for input
 '''
 # TODO: make a graphic representation of handman
 
-# TODO: graphic blanks too close and not being overwritten
-
 import sys
+import random
 
 #read word from text-file
 def get_word():
@@ -20,10 +19,15 @@ def get_word():
     if f.mode == "r":
         words = f.read()
         words = words.split(" ")
-        return words[0]
-        # TODO: add functionality to get word if it is a space as delimmiter or its next line
-        # TODO: make it a random word
-    return "DNE"
+        index = generate_random_index(words);
+        return words[index].lower()
+        # TODO: add functionality to get word if its on the next line
+    print("word not read")
+    sys.exit()
+
+def generate_random_index(words):
+    size = len(words)
+    return random.randint(0, size - 1)
 
 
 
@@ -34,22 +38,30 @@ def start_game(word):
     letters_guessed = []
 
     count = count_letters_in_word(word)
-    shown_word = " _ " * len(word)
+    shown_word = "_ " * len(word)
 
     display_word(shown_word)
 
     # while loop till objects_drawn == 6 or letters_remaining == 0
-    while (parts_drawn != 6 or letters_remaining == 0):
-    # TODO: have to break out of letters_remaining max
-    # TODO: not exiting game when you win
+    while (parts_drawn != 6 and letters_remaining != 0):
+        print("parts_drawn: ", parts_drawn)
+        print("Letters Guessed: ", letters_guessed)
 
         # Ask user to enter letter
         letter = input("Guess a letter...")
-        # TODO: put both letter and word in lowercase
+        letter = letter.lower()
 
-        while letter in letters_guessed:
-            letter = input("That letter has already been guessed. Try a new letter...")
+
+        while letter in letters_guessed or not letter.isalpha() or len(letter) > 1 :
+            # TODO: check value isn't a number or special char as well
+            if letter in letters_guessed:
+                print("That letter has been guessed")
+            elif len(letter) > 1:
+                print("Enter only 1 character!")
+            else:
+                print("Enter only a character")
             print("Letters Guessed: ", letters_guessed)
+            letter = input("Try a new letter...")
 
         # if right
         if letter in count:
@@ -59,7 +71,7 @@ def start_game(word):
             shown_word_list = list(shown_word)
 
             for i in occ:
-                shown_word_list[i] = letter
+                shown_word_list[i * 2] = letter
 
             shown_word = ''.join(shown_word_list)
             letters_remaining -= len(occ)
@@ -70,9 +82,6 @@ def start_game(word):
             letters_guessed.append(letter)
             parts_drawn += 1
             print(letter, " was not in the word! Drawing a body part...")
-
-
-
 
         # display word
         display_word(shown_word)
