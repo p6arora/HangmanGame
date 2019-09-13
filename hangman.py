@@ -8,6 +8,7 @@ Text File for input
 
 '''
 # TODO: make a graphic representation of handman
+# TODO: Ask user to add word to list
 
 import sys
 import random
@@ -40,9 +41,9 @@ def start_game(word):
     count = count_letters_in_word(word)
     shown_word = "_ " * len(word)
 
-    display_word(shown_word)
+    print(shown_word)
 
-    # while loop till objects_drawn == 6 or letters_remaining == 0
+    # while loop till objects_drawn == 6 or letters_remaining ==
     while (parts_drawn != 6 and letters_remaining != 0):
         print("parts_drawn: ", parts_drawn)
         print("Letters Guessed: ", letters_guessed)
@@ -52,46 +53,57 @@ def start_game(word):
         letter = letter.lower()
 
 
-        while letter in letters_guessed or not letter.isalpha() or len(letter) > 1 :
-            # TODO: check value isn't a number or special char as well
-            if letter in letters_guessed:
-                print("That letter has been guessed")
-            elif len(letter) > 1:
-                print("Enter only 1 character!")
-            else:
-                print("Enter only a character")
-            print("Letters Guessed: ", letters_guessed)
-            letter = input("Try a new letter...")
+        validate_input(letter, letters_guessed)
 
-        # if right
-        if letter in count:
-            # See how many times letter has repeated
-            # fill in letters at those index
-            occ = [pos for pos, char in enumerate(word) if char == letter]
-            shown_word_list = list(shown_word)
-
-            for i in occ:
-                shown_word_list[i * 2] = letter
-
-            shown_word = ''.join(shown_word_list)
-            letters_remaining -= len(occ)
-            letters_guessed.append(letter)
-        # if wrong
-        else:
-            # Add a strike/draw an object on
-            letters_guessed.append(letter)
-            parts_drawn += 1
-            print(letter, " was not in the word! Drawing a body part...")
+        shown_word, letters_remaining, letters_guessed, parts_drawn = evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed, parts_drawn)
 
         # display word
-        display_word(shown_word)
+        print(shown_word)
 
-    print("Game Over")
-    sys.exit()
+    end_message(parts_drawn, word)
 
 
-def display_word(shown_word):
-    print (shown_word)
+
+
+def validate_input(letter, letters_guessed):
+    while letter in letters_guessed or not letter.isalpha() or len(letter) > 1:
+        if letter in letters_guessed:
+            print("That letter has been guessed")
+        elif len(letter) > 1:
+            print("Enter only 1 character!")
+        else:
+            print("Enter only a character")
+        print("Letters Guessed: ", letters_guessed)
+        letter = input("Try a new letter...")
+
+
+
+
+
+def end_message(parts_drawn, word):
+    if parts_drawn == 6:
+        print("You have lost...")
+        print("Correct word was", word)
+        play_again_message()
+    else:
+        print("You have won...")
+        play_again_message()
+
+
+def play_again_message():
+    ans = input("Play Again? y for Yes, y for No")
+    if ans.lower().isalpha() and len(ans) == 1:
+        if ans == "y":
+            main()
+        elif ans == 'n':
+            sys.exit()
+        else:
+            print("Not valid response")
+            sys.exit()
+
+
+
+
 
 def count_letters_in_word(word):
     count = {}
@@ -102,6 +114,30 @@ def count_letters_in_word(word):
             count[l] = 1
 
     return count
+
+def evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed, parts_drawn):
+    # if right
+    if letter in count:
+        # See how many times letter has repeated
+        # fill in letters at those index
+        occ = [pos for pos, char in enumerate(word) if char == letter]
+        shown_word_list = list(shown_word)
+
+        for i in occ:
+            shown_word_list[i * 2] = letter
+
+        shown_word = ''.join(shown_word_list)
+        letters_remaining -= len(occ)
+        letters_guessed.append(letter)
+        return shown_word, letters_remaining, letters_guessed, parts_drawn
+
+    # if wrong
+    else:
+        # Add a strike/draw an object on
+        letters_guessed.append(letter)
+        parts_drawn += 1
+        print(letter, " was not in the word! Drawing a body part...")
+        return shown_word, letters_remaining, letters_guessed, parts_drawn
 
 def main():
     word = get_word()
