@@ -7,13 +7,13 @@ Simple Terminal Based Hangman Game
 |:--:| 
 | *Initial Loading Screen* |
 
-| ![Correct Answer](Screenshots/correct_message.JPG) | 
-|:--:| 
-| *Correct Message* |
-
 | ![Wrong Answer](Screenshots/Message_wrong.JPG) | 
 |:--:| 
 | *Wrong Message* |
+
+| ![Correct Answer](Screenshots/correct_message.JPG) | 
+|:--:| 
+| *Correct Message* |
 
 | ![Play Again?](Screenshots/play_again.JPG) | 
 |:--:| 
