@@ -21,6 +21,7 @@ def get_word():
         words = f.read()
         words = words.split(" ")
         index = generate_random_index(words);
+        f.close()
         return words[index].lower()
         # TODO: add functionality to get word if its on the next line
     print("word not read")
