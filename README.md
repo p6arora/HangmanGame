@@ -3,8 +3,24 @@ Simple Terminal Based Hangman Game
 
 ## Screenshots
 
-| ![space-1.jpg](http://www.storywarren.com/wp-content/uploads/2016/09/space-1.jpg) | 
+| ![Initial Loading](Screenshots/Initial_Image.JPG) | 
 |:--:| 
 | *Initial Loading Screen* |
+
+| ![Correct Answer](Screenshots/correct_message.JPG) | 
+|:--:| 
+| *Correct Message* |
+
+| ![Wrong Answer](Screenshots/Message_wrong.JPG) | 
+|:--:| 
+| *Wrong Message* |
+
+| ![Play Again?](Screenshots/play_again.JPG) | 
+|:--:| 
+| *Play Again?* |
+
+
+
+
 
 
