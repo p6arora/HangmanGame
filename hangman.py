@@ -48,6 +48,8 @@ def start_game(word):
         print("parts_drawn: ", parts_drawn)
         print("Letters Guessed: ", letters_guessed)
 
+
+
         # Ask user to enter letter
         letter = input("Guess a letter...")
         letter = letter.lower()
@@ -56,11 +58,18 @@ def start_game(word):
         validate_input(letter, letters_guessed)
 
         shown_word, letters_remaining, letters_guessed, parts_drawn = evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed, parts_drawn)
+        draw_hangman(parts_drawn)
 
         # display word
         print(shown_word)
 
+
+
+
+
     end_message(parts_drawn, word)
+
+
 
 
 
@@ -77,6 +86,70 @@ def validate_input(letter, letters_guessed):
         letter = input("Try a new letter...")
 
 
+def draw_hangman(parts_drawn):
+    hangman = ''
+    if parts_drawn == 1:
+        hangman = ('''      
+                        ---
+                       |   |
+                        ---
+              ''')
+        print(hangman)
+
+    elif parts_drawn == 2:
+        hangman = ('''
+                        ---
+                       |   |
+                        ---
+                         |
+                         |
+                    ''')
+        print (hangman)
+    elif parts_drawn == 3:
+        hangman = ('''
+                        ---
+                       |   |
+                        ---
+                         |
+                         |
+                        / 
+                       /   
+                    ''')
+        print(hangman)
+    elif parts_drawn == 4:
+        hangman = ('''
+                        ---
+                       |   |
+                        ---
+                         |
+                         |
+                        / \\
+                       /   \\
+                    ''')
+        print(hangman)
+    elif parts_drawn == 5:
+        hangman = ('''
+                        ---
+                       |   |
+                        ---
+                         |---
+                         |
+                        / \\
+                       /   \\
+                    ''')
+        print(hangman)
+    elif parts_drawn == 6:
+        hangman = ('''
+                            ---
+                           |   |
+                            ---
+                          ---|---
+                             |
+                            / \\
+                           /   \\
+                        ''')
+        print(hangman)
+
 
 
 
@@ -91,7 +164,7 @@ def end_message(parts_drawn, word):
 
 
 def play_again_message():
-    ans = input("Play Again? y for Yes, y for No")
+    ans = input("Play Again? y for Yes, n for No")
     if ans.lower().isalpha() and len(ans) == 1:
         if ans == "y":
             main()
