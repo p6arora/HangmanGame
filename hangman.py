@@ -27,13 +27,16 @@ def get_word():
     print("word not read")
     sys.exit()
 
+
+# Generates a random index from 0 to the total number of words in the list
 def generate_random_index(words):
     size = len(words)
     return random.randint(0, size - 1)
 
 
 
-# TODO: need to break start_game into smaller functions
+# Base Function for handling all logic of game
+# keeps track of all parts drawn, letters ramaining, guessed and calls all helper functions
 def start_game(word):
     parts_drawn = 0
     letters_remaining = len(word)
@@ -55,9 +58,10 @@ def start_game(word):
         letter = input("Guess a letter...")
         letter = letter.lower()
 
-
+        # checks user input is acceptable
         validate_input(letter, letters_guessed)
 
+        # evaluates what letter user entered - updates letters guessed, draws body part on hangman if wrong, updates shown word
         shown_word, letters_remaining, letters_guessed, parts_drawn = evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed, parts_drawn)
         draw_hangman(parts_drawn)
 
@@ -67,14 +71,19 @@ def start_game(word):
 
 
 
-
+    # end message - tells user if they won or lost and to play again
     end_message(parts_drawn, word)
 
 
 
 
 
-
+'''
+    Makes sure user's input is:
+        1) A letter that's not been guessed before
+        2) Is only a letter
+        3) is only 1 character
+'''
 def validate_input(letter, letters_guessed):
     while letter in letters_guessed or not letter.isalpha() or len(letter) > 1:
         if letter in letters_guessed:
@@ -87,6 +96,7 @@ def validate_input(letter, letters_guessed):
         letter = input("Try a new letter...")
 
 
+# draws the hangman wrt how many wrong guesses user has made
 def draw_hangman(parts_drawn):
     hangman = ''
     if parts_drawn == 1:
@@ -153,7 +163,7 @@ def draw_hangman(parts_drawn):
 
 
 
-
+# end message telling user if they won or lost
 def end_message(parts_drawn, word):
     if parts_drawn == 6:
         print("You have lost...")
@@ -164,6 +174,7 @@ def end_message(parts_drawn, word):
         play_again_message()
 
 
+# Invites user to play again or not
 def play_again_message():
     ans = input("Play Again? y for Yes, n for No")
     if ans.lower().isalpha() and len(ans) == 1:
@@ -178,7 +189,7 @@ def play_again_message():
 
 
 
-
+# creates a dictionary of how many times a letter is in the word
 def count_letters_in_word(word):
     count = {}
     for l in word:
@@ -189,6 +200,7 @@ def count_letters_in_word(word):
 
     return count
 
+# evaluates user response
 def evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed, parts_drawn):
     # if right
     if letter in count:
@@ -197,11 +209,15 @@ def evaluate(letter, count, shown_word, word, letters_remaining, letters_guessed
         occ = [pos for pos, char in enumerate(word) if char == letter]
         shown_word_list = list(shown_word)
 
+        # checks the occurence list to see which index in shown word needs to be revealed
         for i in occ:
             shown_word_list[i * 2] = letter
 
         shown_word = ''.join(shown_word_list)
+        print("Correct! " ,letter, " appears " ,len(occ), " times")
+        # subtracts total blanks remaining from number of occurence of that letter
         letters_remaining -= len(occ)
+        # adds letter to letters guessed
         letters_guessed.append(letter)
         return shown_word, letters_remaining, letters_guessed, parts_drawn
 
